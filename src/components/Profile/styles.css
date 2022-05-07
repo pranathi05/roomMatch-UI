@@ -1,0 +1,56 @@
+.content {
+  font-family: 'Fira Sans';
+  max-height: 100vh;
+  overflow-y: auto;
+}
+.content .row {
+  margin-block: 1rem;
+}
+.content-header {
+  display: flex;
+  justify-content: space-between;
+}
+.content-header span,
+.profile-buttons span:first-child {
+  background-color: rgba(9, 9, 112, 1);
+  color: #fff;
+  border-radius: 0.5rem;
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.profile-buttons span:nth-child(2) {
+  background-color: #fff;
+  color: rgba(9, 9, 112, 1);
+  border-radius: 0.5rem;
+  padding: 0.35rem 1rem;
+  cursor: pointer;
+  margin-left: 1.5rem;
+  text-transform: uppercase;
+}
+.profile-buttons {
+  padding-top: 1rem;
+}
+.content .form-label {
+  margin-bottom: 0.15rem;
+}
+.content-heading {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+.content-sub-heading {
+  font-size: 1.2rem;
+}
+.content .container {
+  padding: 0;
+}
+.profile-radio-buttons {
+  display: flex;
+}
+.profile-radio-buttons .form-check:first-child {
+  margin-right: 1rem;
+}
+.to-text {
+  text-align: center;
+  margin-top: 0.35rem !important;
+}
