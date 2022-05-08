@@ -15,6 +15,7 @@
 }
 .score-label {
   margin-right: 1rem;
+  white-space: nowrap;
 }
 .score-select-input {
   height: 1.75rem;

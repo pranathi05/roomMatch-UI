@@ -4,6 +4,15 @@
   font-family: 'Fira Sans';
   position: relative;
 }
+.prefernces-card {
+  width: 80%;
+  border-radius: 1rem;
+  font-family: 'Fira Sans';
+  position: relative;
+}
+.prefernces-card .row {
+  margin-block: 1rem;
+}
 
 .auth-layout {
   background: rgb(2, 0, 36);

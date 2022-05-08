@@ -25,12 +25,17 @@
 }
 
 .user-info {
-  width: 70%;
+  width: 85%;
   padding-left: 2rem;
+  display: flex;
+  align-items: center;
 }
 .user-info > div:first-child {
   font-size: 1.5rem;
   font-weight: 500;
+}
+.user-info > div:nth-child(2) {
+  margin-inline: 0.5rem;
 }
 .user-button {
   width: 15%;

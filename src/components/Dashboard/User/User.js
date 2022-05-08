@@ -8,9 +8,9 @@ const User = ({ name, email, score, preferences }) => {
   const handleOpen = () => setShowModal(true);
   return (
     <Card className='user-card'>
-      <div className='user-score'>{score}</div>
       <div className='user-info'>
         <div>{name}</div>
+        <div>·</div>
         <div>{email}</div>
       </div>
       <div className='user-button'>

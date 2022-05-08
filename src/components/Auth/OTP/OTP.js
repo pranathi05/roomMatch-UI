@@ -28,6 +28,11 @@ const OTP = () => {
         });
     }
   };
+  const handleEnterPress = (e) => {
+    if (e?.key === 'Enter') {
+      onVerify();
+    }
+  };
   return (
     <div className='auth-layout'>
       <Card className='auth-card'>
@@ -41,6 +46,7 @@ const OTP = () => {
               value={otp}
               onChange={(e) => setOtp(e?.target?.value)}
               placeholder='Enter OTP'
+              onKeyDown={handleEnterPress}
             />
             {didVerifyBtnClick && otp?.length < 4 && (
               <div className='auth-error'>Please enter 4-digit OTP</div>
