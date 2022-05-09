@@ -38,13 +38,6 @@ export const prefs = [
     name: 'smokingAllowed',
     label: 'Drinking / Smoking Allowed',
   },
-
-  {
-    question: `What is your ideal location`,
-    type: 'text',
-    name: 'idealLocation',
-    label: 'Ideal Location',
-  },
   {
     question: `Are you a student`,
     type: 'radio',
@@ -52,17 +45,25 @@ export const prefs = [
     name: 'isStudent',
     label: 'Is Student',
   },
-  {
-    question: `What time do you go to sleep`,
-    type: 'select',
-    name: 'sleepTime',
-    label: 'Sleep Time',
-  },
+
   {
     question: `Do you want to manage your daily meal with your roommate`,
     type: 'radio',
     options: ['Yes', 'No'],
     name: 'mealStatus',
     label: 'Daily Meal Status With Roommate',
+  },
+  {
+    question: `What is your ideal location`,
+    type: 'text',
+    name: 'idealLocation',
+    label: 'Ideal Location',
+  },
+
+  {
+    question: `What time do you go to sleep`,
+    type: 'select',
+    name: 'sleepTime',
+    label: 'Sleep Time',
   },
 ];
