@@ -6,7 +6,7 @@ export const prefs = [
     label: 'Age',
   },
   {
-    question: `Where are you from`,
+    question: `Which state are you from`,
     type: 'text',
     name: 'residence',
     label: 'Residence',

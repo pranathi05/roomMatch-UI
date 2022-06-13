@@ -6,7 +6,8 @@ import User from './User/User';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../utils/helpers';
 import DataLoader from '../Common/DataLoader';
-const Dashboard = () => {
+
+const Dashboard = ({name, email}) => {
   const [score, setScore] = useState('10,8');
   const [users, setUsers] = useState([]);
   const [isFetchingUsers, setIsFetchingUsers] = useState(false);
@@ -26,9 +27,9 @@ const Dashboard = () => {
       });
   }, [score]);
   return (
-    <div className='content'>
-      <div className='content-header'>
-        <div className='content-heading'>User Dashboard</div>
+    <div className='content' >
+      <div className='content-header' >
+        <div className='content-heading'>Dashboard</div>
         <div>
           <Form.Group className='d-flex align-items-center'>
             <Form.Label className='score-label'>Match Level</Form.Label>

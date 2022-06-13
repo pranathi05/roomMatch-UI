@@ -3,7 +3,7 @@ import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../../utils/api';
-import { getErrorMessage, getTimeOptions } from '../../../utils/helpers';
+import { getErrorMessage, getStateOptions, getTimeOptions } from '../../../utils/helpers';
 import { prefs } from './prefs';
 import { toast } from 'react-toastify';
 import { setEmail, setPassword } from '../../../redux/action-creators/index';
@@ -13,10 +13,9 @@ const Preferences = () => {
   const dispatch = useDispatch();
   const { email, displayName, password } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
-
-  const [age, setAge] = useState(20);
+  const [age, setAge] = useState(15);
   const [residence, setResidence] = useState('');
-  const [rent, setRent] = useState({ from: 3000, to: 4000 });
+  const [rent, setRent] = useState({ from: 3000, to: 8000 });
   const [guestsAllowed, setGuestsAllowed] = useState(true);
   const [smokingAllowed, setSmokingAllowed] = useState(true);
   const [joining, setJoining] = useState(0);
@@ -29,7 +28,7 @@ const Preferences = () => {
 
   const isValidNumberInput = (number) =>
     number !== undefined && number !== null && !Number.isNaN(number);
-  const onFinishSignup = () => {
+    const onFinishSignup = () => {
     setDidSaveBtnClick(true);
     if (
       age &&
@@ -40,6 +39,7 @@ const Preferences = () => {
       joining >= 0 &&
       idealLocation
     ) {
+      
       registerUser({
         email,
         name: displayName,
@@ -99,17 +99,16 @@ const Preferences = () => {
               <Col sm='6'>
                 <Form.Group>
                   <Form.Label>{prefs?.[1]?.question}</Form.Label>
-                  <Form.Control
+                  <Form.Select
                     className='text-input'
-                    type='text'
-                    placeholder='Enter residence'
                     value={residence}
                     onChange={(e) => setResidence(e?.target?.value)}
                     onKeyDown={handleEnterPress}
-                  />
-                  {didSaveBtnClick && !residence && (
-                    <div className='auth-error'>Residence is empty</div>
-                  )}
+                  >
+                  {getStateOptions()?.map((option) => (
+                  <option value={option}>{option}</option>
+                  ))}
+                  </Form.Select>
                 </Form.Group>
               </Col>
             </Row>
@@ -268,17 +267,16 @@ const Preferences = () => {
             <Row>
               <Col sm='6'>
                 <Form.Label>{prefs?.[8]?.question}</Form.Label>
-                <Form.Control
+                <Form.Select
                   className='text-input'
-                  type='text'
-                  placeholder='Enter ideal location'
                   value={idealLocation}
                   onChange={(e) => setIdealLocation(e?.target?.value)}
                   onKeyDown={handleEnterPress}
-                />
-                {didSaveBtnClick && !idealLocation && (
-                  <div className='auth-error'>Ideal location is empty</div>
-                )}
+                >
+                {getStateOptions()?.map((option) => (
+                <option value={option}>{option}</option>
+                ))}
+                </Form.Select>
               </Col>
               <Col sm='6'>
                 <Form.Label>{prefs?.[9]?.question}</Form.Label>

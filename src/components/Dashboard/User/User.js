@@ -17,6 +17,8 @@ const User = ({ name, email, score, preferences }) => {
         <span onClick={handleOpen}>Details</span>
       </div>
       <PreferencesModal
+        name ={name}
+        email ={email}
         preferences={preferences}
         show={showModal}
         handleClose={handleClose}

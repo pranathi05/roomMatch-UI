@@ -2,6 +2,18 @@
   font-family: 'Fira Sans';
   max-height: 100vh;
   overflow-y: auto;
+  position: relative; 
+}
+.content::before { 
+  content:"";   
+  background-image: url('../../img/home.jpeg');
+  background-size: cover;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  opacity: 0.5;
 }
 .content .row {
   margin-block: 1rem;
@@ -9,24 +21,29 @@
 .content-header {
   display: flex;
   justify-content: space-between;
+  position: relative;
+  color: #fff;
 }
 .content-header span,
 .profile-buttons span:first-child {
-  background-color: rgba(9, 9, 112, 1);
+  background-color: rgb(68, 68, 71);
   color: #fff;
   border-radius: 0.5rem;
   padding: 0.35rem 1rem;
   cursor: pointer;
   text-transform: uppercase;
+  position: relative;
+
 }
 .profile-buttons span:nth-child(2) {
   background-color: #fff;
-  color: rgba(9, 9, 112, 1);
+  color: rgb(2, 2, 2);
   border-radius: 0.5rem;
   padding: 0.35rem 1rem;
   cursor: pointer;
   margin-left: 1.5rem;
   text-transform: uppercase;
+  position: relative;
 }
 .profile-buttons {
   padding-top: 1rem;
@@ -37,15 +54,26 @@
 .content-heading {
   font-size: 1.75rem;
   margin-bottom: 1rem;
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  color: #040303;
+  font-weight: bold;
+  text-align: center;
+  text-shadow: 1px 1px #7c7979;
 }
 .content-sub-heading {
-  font-size: 1.2rem;
+  font-size: 1.2rem;  
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  color: #040303;
+  font-weight: bold;
 }
 .content .container {
   padding: 0;
 }
 .profile-radio-buttons {
   display: flex;
+
 }
 .profile-radio-buttons .form-check:first-child {
   margin-right: 1rem;
@@ -53,4 +81,21 @@
 .to-text {
   text-align: center;
   margin-top: 0.35rem !important;
+}
+.text-input{
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  color: #000000;
+}
+.form-label{
+  position: relative;
+  font-family: "Times New Roman", Times, serif;
+  color: #000000;
+  font-weight: bold;
+  text-shadow: 1px 1px #7c7979;
+}
+.form-check-label{
+  position: relative;
+  color: #000000;
+  font-weight: bold;
 }

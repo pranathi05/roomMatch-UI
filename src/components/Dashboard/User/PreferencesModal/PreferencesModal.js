@@ -1,8 +1,9 @@
 import React from 'react';
-import { Container, Modal, Row, Col } from 'react-bootstrap';
+import { Container, Modal, Row, Col ,Button} from 'react-bootstrap';
 import { prefs } from '../../../Auth/Preferences/prefs';
 
-const PreferencesModal = ({ preferences, show, handleClose }) => {
+
+const PreferencesModal = ({ preferences, show, handleClose,email,name }) => {
   return (
     <Modal
       className='preferences-modal'
@@ -35,8 +36,14 @@ const PreferencesModal = ({ preferences, show, handleClose }) => {
           ))}
         </Container>
       </Modal.Body>
+      <Modal.Footer>
+          <Button variant="primary">
+            Chat
+          </Button>
+        </Modal.Footer>
     </Modal>
   );
 };
+
 
 export default PreferencesModal;

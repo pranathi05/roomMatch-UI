@@ -13,7 +13,7 @@
 
 .app-user-name > span {
   font-weight: 500;
-  color: rgba(9, 9, 112, 1);
+  color: rgb(1, 1, 1);
 }
 .app-user-email {
   font-size: 0.9rem;
@@ -29,15 +29,15 @@
   border-radius: 0.25rem;
 }
 .sidebar-item:hover:not(.selected-item) {
-  background-color: antiquewhite;
+  background-color:rgb(231, 211, 211);
 }
 .selected-item {
-  background-color: rgba(9, 9, 112, 1);
+  background-color: rgb(92, 92, 101);
   color: #fff;
 }
 
 .logout-buttons span:nth-child(2) {
-  background-color: rgba(9, 9, 112, 1);
+  background-color: rgb(92, 92, 101);
   color: #fff;
   border-radius: 0.5rem;
   padding: 0.35rem 1.5rem;
@@ -48,7 +48,7 @@
 .logout-buttons span:nth-child(1) {
   background-color: #fff;
   border: 1px solid rgba(9, 9, 112, 1);
-  color: rgba(9, 9, 112, 1);
+  color: rgb(24, 24, 25);
   border-radius: 0.5rem;
   padding: 0.35rem 1.5rem;
   cursor: pointer;

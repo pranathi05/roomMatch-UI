@@ -1,8 +1,21 @@
 import { validate } from 'email-validator';
 import React, { useState, useEffect } from 'react';
-import { Card, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
 import {
   setDisplayName,
   setEmail,
@@ -11,6 +24,19 @@ import {
 import { sendOTP } from '../../../utils/api/index';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../../utils/helpers';
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © CSE-MIT-2022 '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const theme = createTheme();
+
 const Signup = () => {
   const { email, displayName, password } = useSelector((state) => state?.auth);
   const dispatch = useDispatch();
@@ -29,6 +55,16 @@ const Signup = () => {
   const navigateToLogin = () => {
     navigate('/login');
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
   const handleEnterPress = (e) => {
     if (e?.key === 'Enter') {
       registerUser();
@@ -36,6 +72,7 @@ const Signup = () => {
   };
   const registerUser = () => {
     setDidSignupBtnClick(true);
+    console.log(email);
     if (
       validate(email) &&
       password?.length >= 6 &&
@@ -56,88 +93,122 @@ const Signup = () => {
   };
 
   return (
-    <div className='auth-layout'>
-      <Card className='auth-card'>
-        <Card.Header className='auth-card-header'>Register</Card.Header>
-        <Card.Body className='auth-card-body'>
-          <Form.Group className='mb-3' controlId='formBasicEmail'>
-            <Form.Label>Email</Form.Label>
-            <Form.Control
+    <>
+    <div>
+      <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs" >
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <PeopleAltIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            RoomMatch - Sign Up
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
               value={email}
-              onChange={(e) => dispatch(setEmail(e?.target?.value))}
-              autoComplete='off'
-              name='--your-email--'
-              className='text-input'
-              type='email'
-              placeholder='Enter email'
               onKeyDown={handleEnterPress}
+              onChange={(e) => dispatch(setEmail(e?.target?.value))}
             />
             {didSignupBtnClick && !validate(email) && (
               <div className='auth-error'>Please enter valid email address</div>
             )}
-          </Form.Group>
-          <Form.Group className='mb-3' controlId='formBasicEmail'>
-            <Form.Label>Display Name</Form.Label>
-            <Form.Control
+            
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="displayName"
+              label="Display Name"
+              name="displayName"
+              autoComplete="displayName"
+              autoFocus
               value={displayName}
-              onChange={(e) => dispatch(setDisplayName(e?.target?.value))}
-              autoComplete='off'
-              name='--your-name--'
-              className='text-input'
-              type='text'
-              placeholder='Enter name'
               onKeyDown={handleEnterPress}
+              onChange={(e) => dispatch(setDisplayName(e?.target?.value))}
             />
             {didSignupBtnClick && !displayName && (
               <div className='auth-error'>Please enter display name</div>
             )}
-          </Form.Group>
-
-          <Form.Group className='mb-3' controlId='formBasicPassword'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
               value={password}
-              onChange={(e) => dispatch(setPassword(e?.target?.value))}
-              className='text-input'
-              type='password'
-              name='--your-password--'
-              autoComplete='off'
-              placeholder='Password'
               onKeyDown={handleEnterPress}
+              onChange={(e) => dispatch(setPassword(e?.target?.value))}
             />
             {didSignupBtnClick && password?.length < 6 && (
               <div className='auth-error'>
                 Password should be at least 6 characters long
               </div>
             )}
-          </Form.Group>
-          <Form.Group className='mb-3' controlId='formBasicConfirmPassword'>
-            <Form.Label>Confirm Password</Form.Label>
-            <Form.Control
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="confirmPassword"
+              label="Confirm Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e?.target?.value)}
-              className='text-input'
-              type='password'
-              placeholder='Confirm Password'
               onKeyDown={handleEnterPress}
+              onChange={(e) => dispatch(setConfirmPassword(e?.target?.value))}
             />
             {didSignupBtnClick && password !== confirmPassword && (
               <div className='auth-error'>Passwords do not match</div>
             )}
-          </Form.Group>
-          <span onClick={navigateToLogin} className='auth-screen-link'>
-            Login Instead
-          </span>
-          <button
-            disabled={isSendingOTP}
-            className='custom-button'
-            onClick={registerUser}
-          >
-            Register
-          </button>
-        </Card.Body>
-      </Card>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={registerUser}
+              disabled={isSendingOTP}
+            >
+              Register
+            </Button>
+            <Grid container>
+              
+              <Grid item >
+                <Link href="#" variant="body2" onClick={navigateToLogin}>
+                  {"Already have an account? Login."}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
     </div>
+    </>
   );
 };
 

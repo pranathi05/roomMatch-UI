@@ -14,6 +14,7 @@ const Router = () => {
   useEffect(() => {
     isAuthorized().then(({ data }) => setLoggedIn(data));
   }, []);
+  
   return (
     <BrowserRouter>
       <Routes>

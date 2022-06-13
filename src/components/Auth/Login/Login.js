@@ -1,6 +1,5 @@
 import { validate } from 'email-validator';
 import React, { useState } from 'react';
-import { Card, Form } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setEmail, setPassword } from '../../../redux/action-creators';
@@ -8,6 +7,32 @@ import { userLogin } from '../../../utils/api';
 import '../styles.css';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../../utils/helpers';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+function Copyright(props) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © CSE-MIT-2022 '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+const theme = createTheme();
+
 const Login = () => {
   const { email, password } = useSelector((state) => state?.auth);
   const [didLoginBtnClick, setDidLoginBtnClick] = useState(false);
@@ -49,53 +74,100 @@ const Login = () => {
       onLogin();
     }
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
+ 
+
   return (
-    <div className='auth-layout'>
-      <Card className='auth-card'>
-        <Card.Header className='auth-card-header'>LOGIN</Card.Header>
-        <Card.Body className='auth-card-body'>
-          <Form.Group className='mb-3' controlId='formBasicEmail'>
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              className='text-input'
-              type='email'
-              placeholder='Enter email'
+    <>
+    <div >
+      <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs" >
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <PeopleAltIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            RoomMatch - Sign in
+          </Typography>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="email"
+              label="Email Address"
+              name="email"
+              autoComplete="email"
+              autoFocus
               value={email}
               onChange={(e) => dispatch(setEmail(e?.target?.value))}
-              onKeyDown={handleEnterPress}
+              onKeyDown = {handleEnterPress}
             />
             {didLoginBtnClick && !validate(email) && (
               <div className='auth-error'>Please enter valid email address</div>
             )}
-          </Form.Group>
-
-          <Form.Group className='mb-3' controlId='formBasicPassword'>
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              className='text-input'
-              type='password'
-              placeholder='Enter Password'
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              autoComplete="current-password"
               value={password}
               onChange={(e) => dispatch(setPassword(e?.target?.value))}
-              onKeyDown={handleEnterPress}
+              onKeyDown = {handleEnterPress}
             />
             {didLoginBtnClick && !password && (
               <div className='auth-error'>Password enter password</div>
             )}
-          </Form.Group>
-          <span className='auth-screen-link' onClick={navigateToSignup}>
-            Create account
-          </span>
-          <button
-            disabled={isLoggingIn}
-            className='custom-button'
-            onClick={onLogin}
-          >
-            Login
-          </button>
-        </Card.Body>
-      </Card>
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+              onClick={onLogin}
+              disabled={isLoggingIn}
+            >
+              Sign In
+            </Button>
+            <Grid container>
+              
+              <Grid item >
+                <Link href="#" variant="body2" onClick={navigateToSignup}>
+                  {"Don't have an account? Sign Up"}
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+        <Copyright sx={{ mt: 8, mb: 4 }} />
+      </Container>
+    </ThemeProvider>
     </div>
+    </>
   );
 };
 

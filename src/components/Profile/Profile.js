@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Col, Container, Form, Row } from 'react-bootstrap';
 import { getUserInfo } from '../../utils/api';
-import { getErrorMessage, getTimeOptions } from '../../utils/helpers';
+import { getErrorMessage,getStateOptions, getTimeOptions } from '../../utils/helpers';
 import { prefs } from '../Auth/Preferences/prefs';
 import './styles.css';
 import { updateUserInfo } from '../../utils/api/index';
@@ -120,10 +120,10 @@ const Profile = () => {
         </div>
       ) : (
         <Container>
-          <Row>
+          <Row className = 'content-non-opaque'>
             <Col sm='6'>
               <Form.Group className='mb-3' controlId='formBasicEmail'>
-                <Form.Label>Email</Form.Label>
+                <Form.Label >Email</Form.Label>
                 <Form.Control
                   disabled
                   className='text-input'
@@ -173,18 +173,16 @@ const Profile = () => {
             <Col sm='6'>
               <Form.Group>
                 <Form.Label>Residence</Form.Label>
-                <Form.Control
-                  disabled={!isEditing}
+                <Form.Select
                   className='text-input'
-                  type='text'
-                  placeholder='Enter residence'
+                  disabled={!isEditing}
                   value={residence}
                   onChange={(e) => setResidence(e?.target?.value)}
-                  onKeyDown={onEnterPress}
-                />
-                {didUpdateBtnClick && !residence && (
-                  <div className='auth-error'>Residence is empty</div>
-                )}
+                >
+                {getStateOptions()?.map((option) => (
+                <option value={option}>{option}</option>
+                ))}
+                </Form.Select>
               </Form.Group>
             </Col>
           </Row>
@@ -246,7 +244,7 @@ const Profile = () => {
               </Form.Group>
             </Col>
             <Col sm='6'>
-              <Form.Label>How early can you join (days)?</Form.Label>
+              <Form.Label >How early can you join (days)?</Form.Label>
 
               <Form.Control
                 disabled={!isEditing}
@@ -264,7 +262,7 @@ const Profile = () => {
           </Row>
           <Row>
             <Col sm='6'>
-              <Form.Label>Guests allowed?</Form.Label>
+              <Form.Label  >Guests allowed?</Form.Label>
 
               <div className='profile-radio-buttons'>
                 {getOptions('guestsAllowed')?.map((option) => (
@@ -284,7 +282,7 @@ const Profile = () => {
               </div>
             </Col>
             <Col sm='6'>
-              <Form.Label>Drinking / smoking allowed?</Form.Label>
+              <Form.Label  >Drinking / smoking allowed?</Form.Label>
 
               <div className='profile-radio-buttons'>
                 {getOptions('smokingAllowed')?.map((option) => (
@@ -307,7 +305,7 @@ const Profile = () => {
 
           <Row>
             <Col sm='6'>
-              <Form.Label>Are you a student?</Form.Label>
+              <Form.Label  >Are you a student?</Form.Label>
               <div className='profile-radio-buttons'>
                 {getOptions('isStudent')?.map((option) => (
                   <Form.Check
@@ -326,7 +324,7 @@ const Profile = () => {
               </div>
             </Col>
             <Col sm='6'>
-              <Form.Label>Want to manage daily meal with roommate?</Form.Label>
+              <Form.Label  >Want to manage daily meal with roommate?</Form.Label>
               <div className='profile-radio-buttons'>
                 {getOptions('mealStatus')?.map((option) => (
                   <Form.Check
@@ -347,22 +345,20 @@ const Profile = () => {
           </Row>
           <Row>
             <Col sm='6'>
-              <Form.Label>Ideal location</Form.Label>
-              <Form.Control
-                disabled={!isEditing}
-                className='text-input'
-                type='text'
-                placeholder='Enter ideal location'
-                value={idealLocation}
-                onChange={(e) => setIdealLocation(e?.target?.value)}
-                onKeyDown={onEnterPress}
-              />
-              {didUpdateBtnClick && !idealLocation && (
-                <div className='auth-error'>Ideal location is empty</div>
-              )}
+              <Form.Label  >Ideal location</Form.Label>
+              <Form.Select
+                  className='text-input'
+                  disabled={!isEditing}
+                  value={idealLocation}
+                  onChange={(e) => setIdealLocation(e?.target?.value)}
+                >
+                {getStateOptions()?.map((option) => (
+                <option value={option}>{option}</option>
+                ))}
+                </Form.Select>
             </Col>
             <Col sm='6'>
-              <Form.Label>Your sleep time?</Form.Label>
+              <Form.Label  >Your sleep time?</Form.Label>
               <Form.Select
                 className='text-input'
                 disabled={!isEditing}

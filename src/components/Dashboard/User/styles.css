@@ -10,7 +10,7 @@
   margin-bottom: 1rem;
 }
 .user-score {
-  background-color: rgba(9, 9, 112, 1);
+  background-color: rgb(114, 114, 125);
   width: 15%;
   color: #fff;
   font-size: 2rem;
@@ -41,7 +41,7 @@
   width: 15%;
 }
 .user-button span {
-  background-color: rgba(9, 9, 112, 1);
+  background-color: rgb(24, 24, 25);
   color: #fff;
   border-radius: 0.5rem;
   padding: 0.35rem 1rem;
