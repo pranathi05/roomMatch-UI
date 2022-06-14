@@ -27,7 +27,7 @@ import { getErrorMessage } from '../../../utils/helpers';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" align="center" {...props} className='non-opaque-comp'>
       {'Copyright © CSE-MIT-2022 '}
       {new Date().getFullYear()}
       {'.'}
@@ -94,7 +94,7 @@ const Signup = () => {
 
   return (
     <>
-    <div>
+    <div className = 'auth-page'>
       <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" >
         <CssBaseline />
@@ -109,10 +109,10 @@ const Signup = () => {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <PeopleAltIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" className='non-opaque-comp'>
             RoomMatch - Sign Up
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }} className='non-opaque-comp'>
             <TextField
               margin="normal"
               required
@@ -125,6 +125,8 @@ const Signup = () => {
               value={email}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setEmail(e?.target?.value))}
+              inputProps = {{style:{fontSize:10}}}
+              InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && !validate(email) && (
               <div className='auth-error'>Please enter valid email address</div>
@@ -138,10 +140,11 @@ const Signup = () => {
               label="Display Name"
               name="displayName"
               autoComplete="displayName"
-              autoFocus
               value={displayName}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setDisplayName(e?.target?.value))}
+              inputProps = {{style:{fontSize:10}}}
+              InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && !displayName && (
               <div className='auth-error'>Please enter display name</div>
@@ -158,6 +161,8 @@ const Signup = () => {
               value={password}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setPassword(e?.target?.value))}
+              inputProps = {{style:{fontSize:10}}}
+              InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && password?.length < 6 && (
               <div className='auth-error'>
@@ -176,6 +181,8 @@ const Signup = () => {
               value={confirmPassword}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setConfirmPassword(e?.target?.value))}
+              inputProps = {{style:{fontSize:10}}}
+              InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && password !== confirmPassword && (
               <div className='auth-error'>Passwords do not match</div>

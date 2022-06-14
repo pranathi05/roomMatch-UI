@@ -11,7 +11,7 @@ export const prefs = [
     name: 'residence',
     label: 'Residence',
   },
-
+  
   {
     question: `What is your budget for rent`,
     type: 'range',
@@ -65,5 +65,5 @@ export const prefs = [
     type: 'select',
     name: 'sleepTime',
     label: 'Sleep Time',
-  },
+  }
 ];

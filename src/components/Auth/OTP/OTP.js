@@ -64,38 +64,8 @@ const OTP = () => {
     });
   };
   return (
-    // <div className='auth-layout'>
-    //   <Card className='auth-card'>
-    //     <Card.Header className='auth-card-header'>OTP Verification</Card.Header>
-    //     <Card.Body className='auth-card-body'>
-    //       <Form.Group className='mb-3' controlId='formBasicEmail'>
-    //         <Form.Label>One-time-password</Form.Label>
-    //         <Form.Control
-    //           className='text-input'
-    //           type='text'
-    //           value={otp}
-    //           onChange={(e) => setOtp(e?.target?.value)}
-    //           placeholder='Enter OTP'
-    //           onKeyDown={handleEnterPress}
-    //         />
-    //         {didVerifyBtnClick && otp?.length < 4 && (
-    //           <div className='auth-error'>Please enter 4-digit OTP</div>
-    //         )}
-    //       </Form.Group>
-
-    //       <button
-    //         disabled={isVerifyingOTP}
-    //         className='custom-button'
-    //         onClick={onVerify}
-    //       >
-    //         Verify
-    //       </button>
-    //     </Card.Body>
-    //   </Card>
-    // </div>
-
     <>
-      <div >
+      <div className='auth-page' >
         <ThemeProvider theme={theme}>
         <Container component="main" maxWidth="xs" >
           <CssBaseline />
@@ -110,7 +80,7 @@ const OTP = () => {
             <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
               <PeopleAltIcon />
             </Avatar>
-            <Typography component="h1" variant="h5">
+            <Typography component="h1" variant="h5" className='non-opaque-comp'>
             One-time-password
             </Typography>
             <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
@@ -126,6 +96,7 @@ const OTP = () => {
                 value={otp}
                 onChange={(e) => setOtp(e?.target?.value)}
                 onKeyDown = {handleEnterPress}
+                InputLabelProps={{style: {fontWeight:'bold'}}}
               />
               {didVerifyBtnClick && otp?.length < 4 && (
                 <div className='auth-error'>Please enter 4-digit OTP</div>

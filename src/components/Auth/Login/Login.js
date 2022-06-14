@@ -23,7 +23,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+    <Typography variant="body2" color="text.secondary" align="center" {...props} className='non-opaque-comp'>
       {'Copyright © CSE-MIT-2022 '}
       {new Date().getFullYear()}
       {'.'}
@@ -88,7 +88,8 @@ const Login = () => {
 
   return (
     <>
-    <div >
+    <div className = 'auth-page'>
+      <div className = 'container'>
       <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" >
         <CssBaseline />
@@ -103,10 +104,10 @@ const Login = () => {
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
             <PeopleAltIcon />
           </Avatar>
-          <Typography component="h1" variant="h5">
-            RoomMatch - Sign in
+          <Typography component="h1" variant="h5" className='non-opaque-comp'>
+            <b>Sign in</b>
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box className='non-opaque-comp' component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
               margin="normal"
               required
@@ -119,6 +120,7 @@ const Login = () => {
               value={email}
               onChange={(e) => dispatch(setEmail(e?.target?.value))}
               onKeyDown = {handleEnterPress}
+              InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didLoginBtnClick && !validate(email) && (
               <div className='auth-error'>Please enter valid email address</div>
@@ -135,9 +137,10 @@ const Login = () => {
               value={password}
               onChange={(e) => dispatch(setPassword(e?.target?.value))}
               onKeyDown = {handleEnterPress}
+              InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didLoginBtnClick && !password && (
-              <div className='auth-error'>Password enter password</div>
+              <div className='auth-error'> enter password</div>
             )}
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -166,6 +169,7 @@ const Login = () => {
         <Copyright sx={{ mt: 8, mb: 4 }} />
       </Container>
     </ThemeProvider>
+    </div>
     </div>
     </>
   );

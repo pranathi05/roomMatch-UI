@@ -17,6 +17,7 @@ const Dashboard = ({name, email}) => {
     const tempArray = score?.split(',');
     getUsers({ from: tempArray?.[0], to: tempArray?.[1] })
       .then(({ data }) => {
+        console.log(data)
         setUsers(data ?? []);
         setIsFetchingUsers(false);
       })

@@ -14,12 +14,12 @@ const Preferences = () => {
   const { email, displayName, password } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
   const [age, setAge] = useState(15);
-  const [residence, setResidence] = useState('');
+  const [residence, setResidence] = useState('Andhra Pradesh');
   const [rent, setRent] = useState({ from: 3000, to: 8000 });
   const [guestsAllowed, setGuestsAllowed] = useState(true);
   const [smokingAllowed, setSmokingAllowed] = useState(true);
   const [joining, setJoining] = useState(0);
-  const [idealLocation, setIdealLocation] = useState('');
+  const [idealLocation, setIdealLocation] = useState('Andhra Pradesh');
   const [isStudent, setIsStudent] = useState(true);
   const [sleepTime, setSleepTime] = useState('06:00 PM');
   const [mealStatus, setMealStatus] = useState(true);
@@ -28,7 +28,7 @@ const Preferences = () => {
 
   const isValidNumberInput = (number) =>
     number !== undefined && number !== null && !Number.isNaN(number);
-    const onFinishSignup = () => {
+  const onFinishSignup = () => {
     setDidSaveBtnClick(true);
     if (
       age &&
@@ -37,9 +37,8 @@ const Preferences = () => {
       rent?.to &&
       rent?.from <= rent?.to &&
       joining >= 0 &&
-      idealLocation
+      idealLocation 
     ) {
-      
       registerUser({
         email,
         name: displayName,
@@ -55,6 +54,7 @@ const Preferences = () => {
           isStudent,
           sleepTime,
           mealStatus,
+        
         },
       })
         .then(() => {

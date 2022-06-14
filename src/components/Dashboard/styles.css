@@ -2,21 +2,11 @@
   width: 75%;
   height: 100vh;
   padding: 1.5rem;
-  position: relative; 
+  background-color: rgb(240, 232, 232); 
 }
-.content::before { 
-    content:"";   
-    background-image: url('../../img/home.jpeg');
-    background-size: cover;
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    opacity: 0.6;
-}
+
 .content-heading{
-  position: relative;
+  content: "";
   font-family: "Times New Roman", Times, serif;
   color: #040303;  
   font-weight: bold;
@@ -25,14 +15,12 @@
   display: flex;
 }
 .align-items-center {
-  position: relative;
   font-family: "Times New Roman", Times, serif;
   color: #040303;  
   font-weight: bold;
   font-style: oblique;
 }
 .align-items-end {
-  position: relative;
   font-family: "Times New Roman", Times, serif;
   color: #040303;  
   font-weight: bold;
