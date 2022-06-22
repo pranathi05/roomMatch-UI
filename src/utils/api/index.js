@@ -60,3 +60,16 @@ export const getUsers = ({ from, to }) =>
     url: `${API_URL}/user/all?from=${from}&to=${to}`,
     headers: getHeaders(getJWT()),
   });
+export const getConversation = ({userId})=>{
+  request({
+    method:'GET',
+    url: `${API_URL}/message/:conversationId`
+  })
+}
+
+export const getMessages = ({conversationId})=>{
+  request({
+    method:'GET',
+    url: `${API_URL}/message/`
+  })
+}

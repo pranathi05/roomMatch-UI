@@ -1,9 +1,13 @@
 import React from 'react';
 import { Container, Modal, Row, Col ,Button} from 'react-bootstrap';
 import { prefs } from '../../../Auth/Preferences/prefs';
-
+import { useNavigate } from 'react-router-dom';
 
 const PreferencesModal = ({ preferences, show, handleClose,email,name }) => {
+  const navigate = useNavigate();
+  const navigateToMessenger = () => {
+    navigate('/chat');
+  };
   return (
     <Modal
       className='preferences-modal'
@@ -37,7 +41,7 @@ const PreferencesModal = ({ preferences, show, handleClose,email,name }) => {
         </Container>
       </Modal.Body>
       <Modal.Footer>
-          <Button variant="primary">
+          <Button variant="primary" onClick={navigateToMessenger} >
             Chat
           </Button>
         </Modal.Footer>

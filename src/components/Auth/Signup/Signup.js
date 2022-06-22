@@ -125,7 +125,6 @@ const Signup = () => {
               value={email}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setEmail(e?.target?.value))}
-              inputProps = {{style:{fontSize:10}}}
               InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && !validate(email) && (
@@ -143,7 +142,6 @@ const Signup = () => {
               value={displayName}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setDisplayName(e?.target?.value))}
-              inputProps = {{style:{fontSize:10}}}
               InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && !displayName && (
@@ -161,7 +159,6 @@ const Signup = () => {
               value={password}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setPassword(e?.target?.value))}
-              inputProps = {{style:{fontSize:10}}}
               InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && password?.length < 6 && (
@@ -181,7 +178,6 @@ const Signup = () => {
               value={confirmPassword}
               onKeyDown={handleEnterPress}
               onChange={(e) => dispatch(setConfirmPassword(e?.target?.value))}
-              inputProps = {{style:{fontSize:10}}}
               InputLabelProps={{style: {fontWeight:'bold'}}}
             />
             {didSignupBtnClick && password !== confirmPassword && (

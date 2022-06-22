@@ -5,6 +5,7 @@ import OTP from '../components/Auth/OTP/OTP';
 import Preferences from '../components/Auth/Preferences/Preferences';
 import Signup from '../components/Auth/Signup/Signup';
 import Home from '../components/Home/Home';
+import Messenger from '../components/Messenger/Messenger';
 import PrivateRoute from './PrivateRoute';
 import { isAuthorized } from '../utils/api/index';
 import AuthRoute from './AuthRoute';
@@ -23,6 +24,9 @@ const Router = () => {
         </Route>
         <Route path='/profile' element={<PrivateRoute loggedIn={loggedIn} />}>
           <Route path='/profile' element={<Home />} />
+        </Route>
+        <Route path='/chat' element={<PrivateRoute loggedIn={loggedIn} />}>
+          <Route path='/chat' element={<Messenger />} />
         </Route>
         <Route path='/' element={<PrivateRoute />}>
           <Route path='/' element={<Home />} />
