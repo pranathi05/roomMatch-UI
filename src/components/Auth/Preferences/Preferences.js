@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import { Card, Col, Container, Form, Row } from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -7,13 +7,17 @@ import { getErrorMessage, getStateOptions, getTimeOptions } from '../../../utils
 import { prefs } from './prefs';
 import { toast } from 'react-toastify';
 import { setEmail, setPassword } from '../../../redux/action-creators/index';
+import Avatar from '@mui/material/Avatar';
+import IconButton from '@mui/material/IconButton';
 const RADIO_OPTIONS = ['Yes', 'No'];
+const GENDER_OPTIONS = ['Female','Male','Other']
 
 const Preferences = () => {
   const dispatch = useDispatch();
   const { email, displayName, password } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
   const [age, setAge] = useState(15);
+  const [gender,setGender] = useState('Female')
   const [residence, setResidence] = useState('Andhra Pradesh');
   const [rent, setRent] = useState({ from: 3000, to: 8000 });
   const [guestsAllowed, setGuestsAllowed] = useState(true);
@@ -31,7 +35,7 @@ const Preferences = () => {
   const onFinishSignup = () => {
     setDidSaveBtnClick(true);
     if (
-      age &&
+      age && gender &&
       residence &&
       rent?.from &&
       rent?.to &&
@@ -45,6 +49,7 @@ const Preferences = () => {
         password,
         preferences: {
           age,
+          gender,
           residence,
           rent,
           guestsAllowed,
@@ -80,7 +85,7 @@ const Preferences = () => {
         <Card.Body className='auth-card-body'>
           <Container>
             <Row>
-              <Col sm='6'>
+              <Col sm='4'>
                 <Form.Group>
                   <Form.Label>{prefs?.[0]?.question}</Form.Label>
                   <Form.Control
@@ -96,9 +101,28 @@ const Preferences = () => {
                   )}
                 </Form.Group>
               </Col>
-              <Col sm='6'>
+              <Col sm='4'>
+              <Form.Label>{prefs?.[1]?.question}</Form.Label>
+                <div className='profile-radio-buttons'>
+                  {GENDER_OPTIONS?.map((option) => (
+                    <Form.Check
+                      type='radio'
+                      label={option}
+                      name='gender'
+                      checked={
+                        (gender === "Female" && option === 'Female') ||
+                        (gender === "Male" && option === 'Male') ||
+                        (gender === "Other" && option === 'Other')
+                      }
+                      className='text-input'
+                      onClick={() => setGender(option)}
+                    />
+                  ))}
+                  </div>
+              </Col>
+              <Col sm='4'>
                 <Form.Group>
-                  <Form.Label>{prefs?.[1]?.question}</Form.Label>
+                  <Form.Label>{prefs?.[2]?.question}</Form.Label>
                   <Form.Select
                     className='text-input'
                     value={residence}
@@ -115,7 +139,7 @@ const Preferences = () => {
             <Row>
               <Col sm='6'>
                 <Form.Group>
-                  <Form.Label>{prefs?.[2]?.question}</Form.Label>
+                  <Form.Label>{prefs?.[3]?.question}</Form.Label>
                   <Row style={{ marginBlock: '0' }}>
                     <Col sm='5'>
                       <Form.Control
@@ -168,7 +192,7 @@ const Preferences = () => {
                 </Form.Group>
               </Col>
               <Col sm='6'>
-                <Form.Label>{prefs?.[3]?.question}</Form.Label>
+                <Form.Label>{prefs?.[4]?.question}</Form.Label>
 
                 <Form.Control
                   className='text-input'
@@ -185,8 +209,7 @@ const Preferences = () => {
             </Row>
             <Row>
               <Col sm='6'>
-                <Form.Label>{prefs?.[4]?.question}</Form.Label>
-
+                <Form.Label>{prefs?.[5]?.question}</Form.Label>
                 <div className='profile-radio-buttons'>
                   {RADIO_OPTIONS?.map((option) => (
                     <Form.Check
@@ -204,7 +227,7 @@ const Preferences = () => {
                 </div>
               </Col>
               <Col sm='6'>
-                <Form.Label>{prefs?.[5]?.question}</Form.Label>
+                <Form.Label>{prefs?.[6]?.question}</Form.Label>
 
                 <div className='profile-radio-buttons'>
                   {RADIO_OPTIONS?.map((option) => (
@@ -226,7 +249,7 @@ const Preferences = () => {
 
             <Row>
               <Col sm='6'>
-                <Form.Label>{prefs?.[6]?.question}</Form.Label>
+                <Form.Label>{prefs?.[7]?.question}</Form.Label>
                 <div className='profile-radio-buttons'>
                   {RADIO_OPTIONS?.map((option) => (
                     <Form.Check
@@ -245,7 +268,7 @@ const Preferences = () => {
               </Col>
               <Col sm='6'>
                 <Form.Label>
-                  <Form.Label>{prefs?.[7]?.question}</Form.Label>
+                  <Form.Label>{prefs?.[8]?.question}</Form.Label>
                 </Form.Label>
                 <div className='profile-radio-buttons'>
                   {RADIO_OPTIONS?.map((option) => (
@@ -266,7 +289,7 @@ const Preferences = () => {
             </Row>
             <Row>
               <Col sm='6'>
-                <Form.Label>{prefs?.[8]?.question}</Form.Label>
+                <Form.Label>{prefs?.[9]?.question}</Form.Label>
                 <Form.Select
                   className='text-input'
                   value={idealLocation}
@@ -279,7 +302,7 @@ const Preferences = () => {
                 </Form.Select>
               </Col>
               <Col sm='6'>
-                <Form.Label>{prefs?.[9]?.question}</Form.Label>
+                <Form.Label>{prefs?.[10]?.question}</Form.Label>
                 <Form.Select
                   className='text-input'
                   value={sleepTime}

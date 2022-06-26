@@ -18,6 +18,7 @@ const Profile = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [age, setAge] = useState(1);
+  const [gender,setGender] = useState('');
   const [residence, setResidence] = useState('');
   const [rent, setRent] = useState({ from: 1, to: 1000 });
   const [guestsAllowed, setGuestsAllowed] = useState(true);
@@ -44,6 +45,7 @@ const Profile = () => {
         setName(data?.name);
         setEmail(data?.email);
         setAge(data?.preferences?.age);
+        setGender(data?.preferences?.gender);
         setRent(data?.preferences?.rent);
         setResidence(data?.preferences?.residence);
         setGuestsAllowed(data?.preferences?.guestsAllowed);
@@ -70,7 +72,7 @@ const Profile = () => {
     setDidUpdateBtnClick(true);
     if (
       name &&
-      isValidNumberInput(age) &&
+      isValidNumberInput(age) && gender &&
       residence &&
       isValidNumberInput(rent?.from) &&
       isValidNumberInput(rent?.to) &&
@@ -82,6 +84,7 @@ const Profile = () => {
         name,
         preferences: {
           age,
+          gender,
           residence,
           rent,
           guestsAllowed,
@@ -153,7 +156,7 @@ const Profile = () => {
           </Row>
           <div className='content-sub-heading'>Preferences</div>
           <Row>
-            <Col sm='6'>
+            <Col sm='4'>
               <Form.Group>
                 <Form.Label>Age</Form.Label>
                 <Form.Control
@@ -170,7 +173,28 @@ const Profile = () => {
                 )}
               </Form.Group>
             </Col>
-            <Col sm='6'>
+            <Col sm='4'>
+              <Form.Label  >Gender</Form.Label>
+
+              <div className='profile-radio-buttons'>
+                {getOptions('gender')?.map((option) => (
+                  <Form.Check
+                    disabled={!isEditing}
+                    type='radio'
+                    label={option}
+                    name='gender'
+                    checked={
+                      (gender === "Female" && option === 'Female') ||
+                      (gender === "Male" && option === 'Male') ||
+                      (gender === "Other" && option === 'Other')
+                    }
+                    className='text-input'
+                    onClick={() => setGender(option)}
+                  />
+                ))}
+              </div>
+            </Col>
+            <Col sm='4'>
               <Form.Group>
                 <Form.Label>Residence</Form.Label>
                 <Form.Select
@@ -187,7 +211,7 @@ const Profile = () => {
             </Col>
           </Row>
           <Row>
-            <Col sm='6'>
+            <Col sm='4'>
               <Form.Group>
                 <Form.Label>Rent</Form.Label>
                 <Row style={{ marginBlock: '0' }}>
@@ -262,7 +286,7 @@ const Profile = () => {
           </Row>
           <Row>
             <Col sm='6'>
-              <Form.Label  >Guests allowed?</Form.Label>
+              <Form.Label  >Guests allowed</Form.Label>
 
               <div className='profile-radio-buttons'>
                 {getOptions('guestsAllowed')?.map((option) => (
@@ -282,8 +306,7 @@ const Profile = () => {
               </div>
             </Col>
             <Col sm='6'>
-              <Form.Label  >Drinking / smoking allowed?</Form.Label>
-
+              <Form.Label  >Drinking / smoking allowed</Form.Label>
               <div className='profile-radio-buttons'>
                 {getOptions('smokingAllowed')?.map((option) => (
                   <Form.Check
@@ -305,7 +328,7 @@ const Profile = () => {
 
           <Row>
             <Col sm='6'>
-              <Form.Label  >Are you a student?</Form.Label>
+              <Form.Label>Student</Form.Label>
               <div className='profile-radio-buttons'>
                 {getOptions('isStudent')?.map((option) => (
                   <Form.Check
@@ -358,7 +381,7 @@ const Profile = () => {
                 </Form.Select>
             </Col>
             <Col sm='6'>
-              <Form.Label  >Your sleep time?</Form.Label>
+              <Form.Label  >Sleep time</Form.Label>
               <Form.Select
                 className='text-input'
                 disabled={!isEditing}

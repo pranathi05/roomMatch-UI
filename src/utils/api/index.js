@@ -41,7 +41,7 @@ export const isAuthorized = () =>
     url: `${API_URL}/auth/authorized`,
     headers: getHeaders(getJWT()),
   });
-export const getUserInfo = () =>
+export const getUserInfo =  () =>
   request({
     method: 'GET',
     url: `${API_URL}/user`,
@@ -63,13 +63,12 @@ export const getUsers = ({ from, to }) =>
 export const getConversation = ({userId})=>{
   request({
     method:'GET',
-    url: `${API_URL}/message/:conversationId`
+    url: `${API_URL}/conversation/${userId}`
   })
 }
-
 export const getMessages = ({conversationId})=>{
   request({
     method:'GET',
-    url: `${API_URL}/message/`
+    url: `${API_URL}/message/${conversationId}`
   })
 }

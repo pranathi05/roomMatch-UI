@@ -1,45 +1,52 @@
 export const prefs = [
   {
-    question: `What is your age`,
+    question: `Age`,
     type: 'number',
     name: 'age',
     label: 'Age',
   },
   {
-    question: `Which state are you from`,
+    question: `Gender`,
+    type:'radio',
+    options: ['Female', 'Male','Other'],
+    name: 'gender',
+    label: 'Gender',
+  },
+  {
+    question: `Property Location`,
     type: 'text',
     name: 'residence',
     label: 'Residence',
   },
   
   {
-    question: `What is your budget for rent`,
+    question: `Budget for rent`,
     type: 'range',
     name: 'rent',
     label: 'Rent',
   },
   {
-    question: `Preferable Date to move in (days)`,
+    question: `Available from (number of days)`,
     type: 'number',
     name: 'joining',
     label: 'Joining Time',
   },
   {
-    question: `Are guests allowed`,
+    question: `Guests`,
     type: 'radio',
     options: ['Yes', 'No'],
     name: 'guestsAllowed',
     label: 'Guests Allowed',
   },
   {
-    question: `Is drinking/smoking allowed`,
+    question: `Drinking/Smoking allowed`,
     type: 'radio',
     options: ['Yes', 'No'],
     name: 'smokingAllowed',
     label: 'Drinking / Smoking Allowed',
   },
   {
-    question: `Are you a student`,
+    question: `Student`,
     type: 'radio',
     options: ['Yes', 'No'],
     name: 'isStudent',
@@ -61,7 +68,7 @@ export const prefs = [
   },
 
   {
-    question: `What time do you go to sleep`,
+    question: `Sleep Time`,
     type: 'select',
     name: 'sleepTime',
     label: 'Sleep Time',
