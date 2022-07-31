@@ -1,50 +1,55 @@
-import Conversation from '../Conversation/Conversation.jsx';
-import Message from '../Message/Message.jsx';
+
 import {  getUserInfo } from '../../utils/api';
 import './messenger.css';
-import { useEffect, useState , useRef} from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { ChatEngine ,getOrCreateChat} from 'react-chat-engine';
+import { useNavigate, useParams } from 'react-router-dom';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+
 // import { io } from "socket.io-client";
 
 export default function Messenger() {
-    const [userId,setUserId] = useState(null);
+    const {email,name} = useParams();
     const [user,setUser] = useState(null);
-    const [conversations,setConversations] = useState([]);
-    const [currentChat, setCurrentChat] = useState(null);
-    const [messages, setMessages] = useState([]);
-    const [newMessage,setNewMessage] = useState("");
-    const scrollRef = useRef();
-    // const socket = useRef();
-
-    // useEffect(() => {
-    //   socket.current = io("ws://localhost:8900");
-    //   socket.current.on("getMessage", (data) => {
-    //     setArrivalMessage({
-    //       sender: data.senderId,
-    //       text: data.text,
-    //       createdAt: Date.now(),
-    //     });
-    //   });
-    // }, []);
-  
-    // useEffect(() => {
-    //   arrivalMessage &&
-    //     currentChat?.members.includes(arrivalMessage.sender) &&
-    //     setMessages((prev) => [...prev, arrivalMessage]);
-    // }, [arrivalMessage, currentChat]);
-  
-    // useEffect(() => {
-    //   socket.current.emit("addUser", user._id);
-    // }, [user]);
-
+    const navigate = useNavigate();
+    const navigateToDashboard = () => {
+      navigate('/dashboard');
+    };
+    const createDirectChat=(creds) =>{
+      getOrCreateChat(
+        creds,
+        { is_direct_chat: true, usernames: [name] },
+      )
+    }
+    // const renderChatForm=(creds)=> {
+    //   return (
+    //     <div>
+    //       <input 
+		// 			placeholder='Username' 
+		// 			value={username} 
+		// 			onChange={(e) => setUsername(e.target.value)} 
+		// 		/>
+    //       <button onClick={() => createDirectChat(creds)}>
+    //         Create
+    //       </button>
+    //     </div>
+    //   )
+    // }
+    // useEffect = (()=>{
+    //   createChat({email: user.email,name: user.name,chatName:name})
+    //   .then(({data})=>{
+    //       console.log(data);
+    //   })
+    //   .catch((err)=>{
+    //     console.log(err);
+    //   })
+    // },[user]);
     const setUserValue = async()=>{
         const setValue = async ()=>{
         await getUserInfo()
         .then(({data})=>{
-            setUserId(data?._id)
             setUser(data)
+            console.log("userdata"+data)
         }).catch((err)=>{
             console.log(err);
         })
@@ -54,148 +59,24 @@ export default function Messenger() {
     
     useEffect(() => {
         setUserValue();
-        console.log(userId)
-        const getConversations = async () => {
-          try {
-            const res = await axios.get("http://localhost:3020/api/conversation/" + userId);
-            setConversations(res.data);
-          } catch (err) {
-            console.log(err);
-          }
-        };
-        getConversations();
-        console.log(conversations)
-      }, [userId,conversations]);
+        console.log(user)
+      }, [user]);
+    
 
-    useEffect(() => {
-        const getMessages = async () => {
-            try {
-            const res = await axios.get("http://localhost:3020/api/message/" + currentChat?._id);
-            setMessages(res.data);
-            } catch (err) {
-            console.log(err);
-            }
-        };
-        getMessages();
-    }, [currentChat]);
-
-    useEffect(() => {
-        scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-    }, [messages]);
-    const handleSubmit =async (e)=>{
-        e.preventDefault();
-        const message = {
-            sender: userId,
-            text: newMessage,
-            conversationId: currentChat._id
-        }
-        try{
-            const res = await axios.post("http://localhost:3020/api/message",message);
-            setMessages([...messages,res.data]);
-            setNewMessage("")
-        }catch(err){
-            console.log(err)
-        }
-    }
-    const navigate = useNavigate();
-    const navigateToDashboard = () => {
-      navigate('/dashboard');
-    };
-    console.log(messages)
     return(
         <>
-        <div className = "chat">
         <div className = "navigateBack">
           <ArrowBackIcon fontSize="large" className = "backButton" onClick = {navigateToDashboard} />
         </div>
-        {conversations !== null ? <div className = "messenger" >
-            <div className='chatMenu'>
-                <div className="chatMenuWrapper">
-                    <input placeholder=" Search for friends" className="chatMenuInput"></input>
-                    {conversations.map((c)=>(
-                       <div onClick={() => setCurrentChat(c)}>
-                            <Conversation conversation={c} currentUser={user} />
-                        </div>
-                    ))}
-                </div>
-            </div>
-            <div className="chatBox">
-          <div className="chatBoxWrapper">
-            {currentChat ? (
-              <>
-                <div className="chatBoxTop">
-                  {
-                    messages.length !== 0  ? (messages.map((m) => (
-                      <div ref={scrollRef}>
-                        <Message message={m} own = {m.sender === userId} />
-                      </div>))): <div className = "noConversationText">Start the conversation...</div>
-                  }
-                
-                </div>
-                <div className="chatBoxBottom">
-                  <textarea
-                    className="chatMessageInput"
-                    placeholder="write something..."
-                    onChange={(e)=>setNewMessage(e.target.value)}
-                    value= {newMessage}
-                  ></textarea>
-                  <button className="chatSubmitButton" onClick = {handleSubmit}>
-                    Send
-                  </button>
-                </div>
-              </>
-            ) : (
-              <span className="noConversationText">
-                Open a conversation to start a chat.
-              </span>
-            )}
-          </div>
-        </div>
-        </div>: <div>loading..</div>}
-        </div>
+      <ChatEngine
+          height='100vh'
+          userName= 'dummyP'
+          userSecret= 'kpranathi05@gmail.com'
+          projectID='5a6ea840-faf7-4265-ae99-539592b37035'
+          renderNewChatForm={(creds) => createDirectChat(creds)}
+        />
         </>
     )
 }
 
-// const getConvo = async ()=>{
-    //     console.log('Hello from convo: ',userId);
-    //     const res = await axios.get('http://localhost:3020/api/conversation/'+userId);
-    //     console.log(res);
-    //     if(res.data !== null){
-    //         setConversations(res.data);
-    //     }
-    // }
-    // getUserInfo()
-    //         .then(({data})=>{
-    //             console.log(data)
-    //             if(data !== null){
-    //                 setUserId(data?._id);
-    //                 console.log(userId)
-    //             }
-                
-    //         }).catch((err)=>{
-    //             console.log(err);
-    //         })
-    // useEffect(()=>{
-    //     const getConversations = async ()=>{
-
-    //     }
-    // })
-    // const getConversations = async () =>{
-    //     await getConvo();
-    //     console.log(conversations)
-    // }
-    // useEffect(()=>{
-    //     if(userId !== null)
-    //     {
-    //         console.log(userId) 
-    //         getConversations();
-    //     }
-        
-    // },[userId])
-    // useEffect(()=>{
-    //     if(!conversations){
-    //         setNum(200);
-    //     }
-    // },[conversations])
     

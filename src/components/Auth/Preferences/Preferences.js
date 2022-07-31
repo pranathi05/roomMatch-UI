@@ -1,65 +1,89 @@
 import React, { useState, useEffect} from 'react';
-import { Card, Col, Container, Form, Row } from 'react-bootstrap';
+import { Card, Col, Container, Form, Row ,Button} from 'react-bootstrap';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../../../utils/api';
-import { getErrorMessage, getStateOptions, getTimeOptions } from '../../../utils/helpers';
+import { getErrorMessage, getStateOptions,getDeptOptions,getAptType,getFoodpref} from '../../../utils/helpers';
 import { prefs } from './prefs';
 import { toast } from 'react-toastify';
 import { setEmail, setPassword } from '../../../redux/action-creators/index';
-import Avatar from '@mui/material/Avatar';
-import IconButton from '@mui/material/IconButton';
+import { MDBRange } from 'mdb-react-ui-kit';
+import {app} from '../../../base';
 const RADIO_OPTIONS = ['Yes', 'No'];
-const GENDER_OPTIONS = ['Female','Male','Other']
-
+const GENDER_OPTIONS = ['Female','Male']
+const CULINARY_SKILLS = ['Expert','Sometimes','None']
+const db = app.firestore();
 const Preferences = () => {
   const dispatch = useDispatch();
   const { email, displayName, password } = useSelector((state) => state?.auth);
   const navigate = useNavigate();
-  const [age, setAge] = useState(15);
+  
   const [gender,setGender] = useState('Female')
-  const [residence, setResidence] = useState('Andhra Pradesh');
-  const [rent, setRent] = useState({ from: 3000, to: 8000 });
-  const [guestsAllowed, setGuestsAllowed] = useState(true);
-  const [smokingAllowed, setSmokingAllowed] = useState(true);
-  const [joining, setJoining] = useState(0);
-  const [idealLocation, setIdealLocation] = useState('Andhra Pradesh');
-  const [isStudent, setIsStudent] = useState(true);
-  const [sleepTime, setSleepTime] = useState('06:00 PM');
-  const [mealStatus, setMealStatus] = useState(true);
+  const [hometown,setHomeTown] = useState('Andhra Pradesh')
+  const [currentcity,setCurrentcity] = useState('Andhra Pradesh')
+  const [needroommate,setNeedRoommate] = useState(true);
+  const [otherbranch,setOtherbranch] = useState(false);
+  const [workex,setWorkex] = useState(0);
+  const [distuni,setDistuni] = useState(0);
+  const [apttype,setApttype] = useState('1bhk');
+  const [rentbudget,setRentbudget] = useState(5000);
+  const [alcohol,setAlcohol] = useState(false);
+  const [foodpref,setFoodpref] = useState('Flexible');
+  const [smoking,setSmoking] = useState(false);
+  const [culskills,setCulskills] = useState('Sometimes');
+  const lookingforroommate = true;
+  const [dept,setDept] = useState('Aeronautical engineering');
+  const [hall,setHall] = useState(false);
+  const [maxppr,setMaxppr] = useState(1);
+  const [img,setImg] = useState(null);
 
   const [didSaveBtnClick, setDidSaveBtnClick] = useState(false);
+  const fileSelectedHandler = async (e) =>{
+    const file = e.target.files[0];
+    const storageRef = app.storage().ref();
+    const fileRef = storageRef.child(file.name);
+    await fileRef.put(file);
+    setImg(await fileRef.getDownloadURL());
+  }
+  const fileUploadHandler = () =>{
+    const userName = displayName;
+    if(!userName)
+    return;
 
+    db.collection("images").doc(userName).set({
+      email : email,
+      Avatar: img
+    })
+      
+  }
   const isValidNumberInput = (number) =>
-    number !== undefined && number !== null && !Number.isNaN(number);
+    number !== undefined && number !== null && !Number.isNaN(number) && number !== 0;
   const onFinishSignup = () => {
+    fileUploadHandler();
     setDidSaveBtnClick(true);
-    if (
-      age && gender &&
-      residence &&
-      rent?.from &&
-      rent?.to &&
-      rent?.from <= rent?.to &&
-      joining >= 0 &&
-      idealLocation 
-    ) {
-      registerUser({
+
+    registerUser({
         email,
         name: displayName,
         password,
         preferences: {
-          age,
-          gender,
-          residence,
-          rent,
-          guestsAllowed,
-          smokingAllowed,
-          joining,
-          idealLocation,
-          isStudent,
-          sleepTime,
-          mealStatus,
-        
+          gender , 
+          hometown ,
+          currentcity ,
+          needroommate ,
+          otherbranch ,
+          workex ,
+          distuni ,
+          apttype ,
+          rentbudget ,
+          alcohol ,
+          foodpref ,
+          smoking ,
+          culskills ,
+          lookingforroommate ,
+          dept ,
+          hall ,
+          maxppr
         },
       })
         .then(() => {
@@ -71,7 +95,6 @@ const Preferences = () => {
         .catch((error) => {
           toast.error(getErrorMessage(error));
         });
-    }
   };
   const handleEnterPress = (e) => {
     if (e?.key === 'Enter') {
@@ -85,24 +108,8 @@ const Preferences = () => {
         <Card.Body className='auth-card-body'>
           <Container>
             <Row>
-              <Col sm='4'>
-                <Form.Group>
-                  <Form.Label>{prefs?.[0]?.question}</Form.Label>
-                  <Form.Control
-                    className='text-input'
-                    type='number'
-                    placeholder='Enter age'
-                    value={age}
-                    onChange={(e) => setAge(parseInt(e?.target?.value))}
-                    onKeyDown={handleEnterPress}
-                  />
-                  {didSaveBtnClick && !age && (
-                    <div className='auth-error'>Age is empty</div>
-                  )}
-                </Form.Group>
-              </Col>
-              <Col sm='4'>
-              <Form.Label>{prefs?.[1]?.question}</Form.Label>
+              <Col sm='6'>
+              <Form.Label>{prefs?.[0]?.question}</Form.Label>
                 <div className='profile-radio-buttons'>
                   {GENDER_OPTIONS?.map((option) => (
                     <Form.Check
@@ -111,8 +118,7 @@ const Preferences = () => {
                       name='gender'
                       checked={
                         (gender === "Female" && option === 'Female') ||
-                        (gender === "Male" && option === 'Male') ||
-                        (gender === "Other" && option === 'Other')
+                        (gender === "Male" && option === 'Male') 
                       }
                       className='text-input'
                       onClick={() => setGender(option)}
@@ -120,13 +126,13 @@ const Preferences = () => {
                   ))}
                   </div>
               </Col>
-              <Col sm='4'>
+              <Col sm='6'>
                 <Form.Group>
-                  <Form.Label>{prefs?.[2]?.question}</Form.Label>
+                  <Form.Label>{prefs?.[1]?.question}</Form.Label>
                   <Form.Select
                     className='text-input'
-                    value={residence}
-                    onChange={(e) => setResidence(e?.target?.value)}
+                    value={hometown}
+                    onChange={(e) => setHomeTown(e?.target?.value)}
                     onKeyDown={handleEnterPress}
                   >
                   {getStateOptions()?.map((option) => (
@@ -139,180 +145,230 @@ const Preferences = () => {
             <Row>
               <Col sm='6'>
                 <Form.Group>
-                  <Form.Label>{prefs?.[3]?.question}</Form.Label>
-                  <Row style={{ marginBlock: '0' }}>
-                    <Col sm='5'>
-                      <Form.Control
-                        className='text-input'
-                        type='number'
-                        placeholder='From'
-                        min={0}
-                        value={rent?.from}
-                        onChange={(e) => {
-                          if (parseInt(e?.target?.value) > rent?.to) {
-                            setRent({
-                              from: parseInt(e?.target?.value),
-                              to: parseInt(e?.target?.value),
-                            });
-                          } else {
-                            setRent({
-                              ...rent,
-                              from: parseInt(e?.target?.value),
-                            });
-                          }
-                        }}
-                        onKeyDown={handleEnterPress}
-                      />
-                    </Col>
-                    <Col sm='2' className='to-text'>
-                      To
-                    </Col>
-                    <Col sm='5'>
-                      <Form.Control
-                        className='text-input'
-                        type='number'
-                        min={0}
-                        placeholder='To'
-                        value={rent?.to}
-                        onChange={(e) => {
-                          setRent({ ...rent, to: parseInt(e?.target?.value) });
-                        }}
-                        onKeyDown={handleEnterPress}
-                      />
-                    </Col>
-                  </Row>
-                  {didSaveBtnClick &&
-                    (!isValidNumberInput(rent?.from) ||
-                      !isValidNumberInput(rent?.to) ||
-                      rent?.from > rent?.to) && (
-                      <div className='auth-error'>
-                        Enter valid values for rent
-                      </div>
-                    )}
-                </Form.Group>
+                  <Form.Label>{prefs?.[2]?.question}</Form.Label>
+                  <Form.Select
+                    className='text-input'
+                    value={currentcity}
+                    onChange={(e) => setCurrentcity(e?.target?.value)}
+                    onKeyDown={handleEnterPress}
+                  >
+                  {getStateOptions()?.map((option) => (
+                  <option value={option}>{option}</option>
+                  ))}
+                  </Form.Select>
+                  </Form.Group>
               </Col>
               <Col sm='6'>
+                <Form.Label>{prefs?.[3]?.question}</Form.Label>
+                <div className='profile-radio-buttons'>
+                  {RADIO_OPTIONS?.map((option) => (
+                    <Form.Check
+                      type='radio'
+                      label={option}
+                      name='needroommate'
+                      checked={
+                        (needroommate && option === 'Yes') ||
+                        (!needroommate && option === 'No')
+                      }
+                      className='text-input'
+                      onClick={() => setNeedRoommate(option === 'Yes')}
+                    />
+                  ))}
+                </div>
+              </Col>
+            </Row>
+            <Row>
+              <Col sm='6'>
                 <Form.Label>{prefs?.[4]?.question}</Form.Label>
-
+                <div className='profile-radio-buttons'>
+                  {RADIO_OPTIONS?.map((option) => (
+                    <Form.Check
+                      type='radio'
+                      label={option}
+                      name='otherbranch'
+                      checked={
+                        (otherbranch && option === 'Yes') ||
+                        (!otherbranch && option === 'No')
+                      }
+                      className='text-input'
+                      onClick={() => setOtherbranch(option === 'Yes')}
+                    />
+                  ))}
+                </div>
+              </Col>
+              <Col sm='6'>
+                <Form.Label>{prefs?.[5]?.question}</Form.Label>
                 <Form.Control
                   className='text-input'
                   type='number'
-                  placeholder='Enter joining time'
-                  value={joining}
-                  onChange={(e) => setJoining(parseInt(e?.target?.value))}
+                  placeholder='Work Experience'
+                  min = '0'
+                  value={workex}
+                  onChange={(e) => setWorkex(parseInt(e?.target?.value))}
                   onKeyDown={handleEnterPress}
                 />
-                {didSaveBtnClick && !isValidNumberInput(joining) && (
-                  <div className='auth-error'>Joining time is empty</div>
+                {didSaveBtnClick && !isValidNumberInput(workex) && (
+                  <div className='auth-error'>Work Experience is empty</div>
                 )}
               </Col>
+              
             </Row>
+
             <Row>
-              <Col sm='6'>
-                <Form.Label>{prefs?.[5]?.question}</Form.Label>
-                <div className='profile-radio-buttons'>
-                  {RADIO_OPTIONS?.map((option) => (
-                    <Form.Check
-                      type='radio'
-                      label={option}
-                      name='guestsAllowed'
-                      checked={
-                        (guestsAllowed && option === 'Yes') ||
-                        (!guestsAllowed && option === 'No')
-                      }
-                      className='text-input'
-                      onClick={() => setGuestsAllowed(option === 'Yes')}
-                    />
-                  ))}
-                </div>
-              </Col>
-              <Col sm='6'>
+            <Col sm='6'>
                 <Form.Label>{prefs?.[6]?.question}</Form.Label>
-
-                <div className='profile-radio-buttons'>
-                  {RADIO_OPTIONS?.map((option) => (
-                    <Form.Check
-                      type='radio'
-                      label={option}
-                      name='smokingAllowed'
-                      checked={
-                        (smokingAllowed && option === 'Yes') ||
-                        (!smokingAllowed && option === 'No')
-                      }
-                      className='text-input'
-                      onClick={() => setSmokingAllowed(option === 'Yes')}
-                    />
-                  ))}
-                </div>
+                <Form.Control
+                  className='text-input'
+                  type='number'
+                  placeholder='Distance from university'
+                  min = '0'
+                  value={distuni}
+                  onChange={(e) => setDistuni(parseInt(e?.target?.value))}
+                  onKeyDown={handleEnterPress}
+                />
+                {didSaveBtnClick && !isValidNumberInput(distuni) && (
+                  <div className='auth-error'>Distance from university is empty</div>
+                )}
               </Col>
-            </Row>
-
-            <Row>
               <Col sm='6'>
                 <Form.Label>{prefs?.[7]?.question}</Form.Label>
-                <div className='profile-radio-buttons'>
-                  {RADIO_OPTIONS?.map((option) => (
-                    <Form.Check
-                      type='radio'
-                      label={option}
-                      name='isStudent'
-                      checked={
-                        (isStudent && option === 'Yes') ||
-                        (!isStudent && option === 'No')
-                      }
-                      className='text-input'
-                      onClick={() => setIsStudent(option === 'Yes')}
-                    />
-                  ))}
-                </div>
-              </Col>
-              <Col sm='6'>
-                <Form.Label>
-                  <Form.Label>{prefs?.[8]?.question}</Form.Label>
-                </Form.Label>
-                <div className='profile-radio-buttons'>
-                  {RADIO_OPTIONS?.map((option) => (
-                    <Form.Check
-                      type='radio'
-                      label={option}
-                      name='mealStatus'
-                      checked={
-                        (mealStatus && option === 'Yes') ||
-                        (!mealStatus && option === 'No')
-                      }
-                      className='text-input'
-                      onClick={() => setMealStatus(option === 'Yes')}
-                    />
-                  ))}
-                </div>
-              </Col>
-            </Row>
-            <Row>
-              <Col sm='6'>
-                <Form.Label>{prefs?.[9]?.question}</Form.Label>
                 <Form.Select
                   className='text-input'
-                  value={idealLocation}
-                  onChange={(e) => setIdealLocation(e?.target?.value)}
+                  value={apttype}
+                  onChange={(e) => setApttype(e?.target?.value)}
                   onKeyDown={handleEnterPress}
                 >
-                {getStateOptions()?.map((option) => (
+                {getAptType()?.map((option) => (
                 <option value={option}>{option}</option>
                 ))}
                 </Form.Select>
               </Col>
+              
+            </Row>
+            <Row>
+            <Col sm='6'>
+                  <Form.Label>{prefs?.[8]?.question}</Form.Label>
+                  <MDBRange
+                    defaultValue={5000}
+                    min='5000'
+                    max='40000'
+                    step='1000'
+                    onChange = {(e) => setRentbudget(e?.target?.value)}/>   
+              </Col>
               <Col sm='6'>
+              <Form.Label>{prefs?.[9]?.question}</Form.Label>
+              <div className='profile-radio-buttons'>
+                  {RADIO_OPTIONS?.map((option) => (
+                    <Form.Check
+                      type='radio'
+                      label={option}
+                      name='alcohol'
+                      checked={
+                        (alcohol && option === 'Yes') ||
+                        (!alcohol && option === 'No')
+                      }
+                      className='text-input'
+                      onClick={() => setAlcohol(option === 'Yes')}
+                    />
+                  ))}
+              </div>
+              </Col>
+              
+            </Row>
+            <Row>
+            <Col sm='6'>
                 <Form.Label>{prefs?.[10]?.question}</Form.Label>
                 <Form.Select
                   className='text-input'
-                  value={sleepTime}
-                  onChange={(e) => setSleepTime(e?.target?.value)}
+                  value={foodpref}
+                  onChange={(e) => setFoodpref(e?.target?.value)}
+                  onKeyDown={handleEnterPress}
                 >
-                  {getTimeOptions()?.map((option) => (
-                    <option value={option}>{option}</option>
-                  ))}
+                {getFoodpref()?.map((option) => (
+                <option value={option}>{option}</option>
+                ))}
                 </Form.Select>
               </Col>
+            <Col sm='6'>
+              <Form.Label>{prefs?.[11]?.question}</Form.Label>
+              <div className='profile-radio-buttons'>
+                  {RADIO_OPTIONS?.map((option) => (
+                    <Form.Check
+                      type='radio'
+                      label={option}
+                      name='smoking'
+                      checked={
+                        (smoking && option === 'Yes') ||
+                        (!smoking && option === 'No')
+                      }
+                      className='text-input'
+                      onClick={() => setSmoking(option === 'Yes')}
+                    />
+                  ))}
+                </div>
+              </Col>
+              
+            </Row>
+            <Row>
+            <Col sm='6'>
+              <Form.Label>{prefs?.[12]?.question}</Form.Label>
+              <Form.Select
+                    className='text-input'
+                    value={culskills}
+                    onChange={(e) => setCulskills(e?.target?.value)}
+                    onKeyDown={handleEnterPress}
+                  >
+                  {CULINARY_SKILLS.map((option) => (
+                  <option value={option}>{option}</option>
+                  ))}
+                  </Form.Select>
+              </Col>  
+              <Col sm='6'>
+              <Form.Label>{prefs?.[13]?.question}</Form.Label>
+              <Form.Select
+                    className='text-input'
+                    value={dept}
+                    onChange={(e) => setDept(e?.target?.value)}
+                    onKeyDown={handleEnterPress}
+                  >
+                  {getDeptOptions()?.map((option) => (
+                  <option value={option}>{option}</option>
+                  ))}
+              </Form.Select>
+              </Col>
+            </Row>
+            <Row>
+            <Col sm='6'>
+              <Form.Label>{prefs?.[14]?.question}</Form.Label>
+              <div className='profile-radio-buttons'>
+                  {RADIO_OPTIONS?.map((option) => (
+                    <Form.Check
+                      type='radio'
+                      label={option}
+                      name='hall'
+                      checked={
+                        (hall && option === 'Yes') ||
+                        (!hall && option === 'No')
+                      }
+                      className='text-input'
+                      onClick={() => setHall(option === 'Yes')}
+                    />
+                  ))}
+                </div>
+              </Col>
+              <Col sm="4">
+              <Form.Label>{prefs?.[15]?.question}</Form.Label>
+                  <MDBRange
+                    defaultValue={1}
+                    min='1'
+                    max='3'
+                    step='1'
+                    onChange = {(e) => setMaxppr(e?.target?.value)}/> 
+              </Col>
+            </Row>
+            <Row>
+              <Form.Label>Upload Profile Picture</Form.Label>
+                <input type="file" onChange={fileSelectedHandler}/>
             </Row>
             <Row>
               <div className='profile-buttons'>

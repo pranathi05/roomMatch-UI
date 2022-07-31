@@ -25,8 +25,8 @@ const Router = () => {
         <Route path='/profile' element={<PrivateRoute loggedIn={loggedIn} />}>
           <Route path='/profile' element={<Home />} />
         </Route>
-        <Route path='/chat' element={<PrivateRoute loggedIn={loggedIn} />}>
-          <Route path='/chat' element={<Messenger />} />
+        <Route path='/chat/:email/:name' element={<PrivateRoute loggedIn={loggedIn} />}>
+          <Route path='/chat/:email/:name' element={<Messenger />} />
         </Route>
         <Route path='/' element={<PrivateRoute />}>
           <Route path='/' element={<Home />} />

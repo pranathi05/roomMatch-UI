@@ -1,6 +1,6 @@
 .user-card {
   display: flex;
-  flex-direction: row !important;
+  flex-direction: column !important;
   justify-content: space-between;
   align-items: center;
   padding: 0;
@@ -72,4 +72,9 @@
 }
 .chatIcon{
   float:right;
+}
+.imageIcon{
+  border-radius: 20px;
+  width:200px;
+  height:250px;
 }

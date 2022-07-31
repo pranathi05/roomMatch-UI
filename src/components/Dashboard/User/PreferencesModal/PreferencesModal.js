@@ -18,10 +18,10 @@ const Button = styled.button`
       background-color: gray;
     }
 `;
-const PreferencesModal = ({ preferences, show, handleClose,email,name }) => {
+const PreferencesModal = ({ username,preferences, show, handleClose,email }) => {
   const navigate = useNavigate();
   const navigateToMessenger = () => {
-    navigate('/chat');
+    navigate(`/chat/${email}/${username}`);
   };
   return (
     <Modal
@@ -43,20 +43,8 @@ const PreferencesModal = ({ preferences, show, handleClose,email,name }) => {
                 {label}
               </Col>
               <Col sm='6'>
-                {name === 'gender' 
-                ? preferences?.[name] === 'Female' 
-                  ? 'Female'
-                  : preferences?.[name]  === 'Male'
-                  ? 'Male'
-                  : 'Other'
-                : 
-                name !== 'rent' 
-                  ? preferences?.[name] === true
-                    ? 'Yes'
-                    : preferences?.[name] === false
-                    ? 'No'
-                    : preferences?.[name]
-                  : `${preferences?.[name]?.from} - ${preferences?.[name]?.to}`}
+                {preferences?.[name] === false ? "No" : 
+                preferences?.[name] ===  true ? "Yes" : preferences?.[name]}
               </Col>
             </Row>
           ))}

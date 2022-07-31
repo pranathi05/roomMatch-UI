@@ -1,16 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
-import { getUsers } from '../../utils/api';
+import React, { useEffect, useState ,useCallback} from 'react';
+import { Form,Row } from 'react-bootstrap';
+import { getUsers,getUserInfo } from '../../utils/api';
 import './styles.css';
 import User from './User/User';
 import { toast } from 'react-toastify';
 import { getErrorMessage } from '../../utils/helpers';
 import DataLoader from '../Common/DataLoader';
 
-const Dashboard = ({name, email}) => {
+
+const Dashboard = () => {
   const [score, setScore] = useState('10,8');
   const [users, setUsers] = useState([]);
   const [isFetchingUsers, setIsFetchingUsers] = useState(false);
+  const [userEmail,setUserEmail] = useState('');
 
   useEffect(() => {
     setIsFetchingUsers(true);
@@ -57,9 +59,11 @@ const Dashboard = ({name, email}) => {
         <div className='screen-centered-div'>No users found.</div>
       ) : (
         <div>
+          <Row>
           {users?.map((user) => (
-            <User {...user} />
+            <User {...user} userEmail={userEmail}/>
           ))}
+          </Row>
         </div>
       )}
     </div>
